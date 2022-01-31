@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using HtmlAgilityPack;
+#if DEBUG
+using System.Runtime.InteropServices;
+#endif
 
 namespace WoTBonus
 {
@@ -37,6 +39,7 @@ namespace WoTBonus
             AllocConsole();
 #endif
             ContextMenu menu = new ContextMenu();
+            menu.MenuItems.Add("rykoszet.info", OpenRykoszetWebsite);
             menu.MenuItems.Add("Exit", ContextMenuExit);
             trayIcon.ContextMenu = menu;
             trayIcon.Icon = Properties.Resources.AppIcon;
@@ -58,11 +61,6 @@ namespace WoTBonus
                 return nodes.Select(n => n.InnerText.Trim()).ToList();
             }
             return new List<string>();
-        }
-
-        private void ContextMenuExit(object sender, EventArgs e)
-        {
-            OnExit();
         }
 
         private void OnExit()
@@ -88,6 +86,16 @@ namespace WoTBonus
                 }
             }
             prevTitles = newTitles;
+        }
+
+        private void OpenRykoszetWebsite(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(RYKOSZET_URL);
+        }
+
+        private void ContextMenuExit(object sender, EventArgs e)
+        {
+            OnExit();
         }
     }
 }
