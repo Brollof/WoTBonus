@@ -52,14 +52,22 @@ namespace WoTBonus
 
         private List<string> GetTitles()
         {
-            HtmlWeb web = new HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = web.Load(RYKOSZET_URL);
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//h2[@class='post-title entry-title']");
-
-            if (nodes != null)
+            try
             {
-                return nodes.Select(n => n.InnerText.Trim()).ToList();
+                HtmlWeb web = new HtmlWeb();
+                HtmlAgilityPack.HtmlDocument doc = web.Load(RYKOSZET_URL);
+                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//h2[@class='post-title entry-title']");
+
+                if (nodes != null)
+                {
+                    return nodes.Select(n => n.InnerText.Trim()).ToList();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Web parsing error: {0}", ex.Message);
+            };
+
             return new List<string>();
         }
 
